@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Epic Game Store</title>
+  <link rel="stylesheet" href="OG.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color:color-mix(in xyz-d50, black 100%, rgb(17, 0, 255) 10%);
+    }
+
+    header {
+      background-color: #000000b7;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .product {
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin: 15px;
+      padding: 15px;
+      width: 220px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+   
+      transition: transform 0.3s ease-in-out;
+      transform: scale(1); 
+
+    }
+    .product:hover {
+      transform: scale(1.1); 
+    }
+
+  
+    
+ 
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      margin: 5px 0;
+    }
+
+    .product button {
+      background-color: #0084ffc4;
+      color: rgb(248, 248, 248);
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+       transition: transform 0.3s ease-in-out;
+      transform: scale(1); 
+
+    }
+    .product button:hover {
+      transform: scale(1.1); 
+    }
+    
+
+    .product button:hover {
+      background-color: #000000;
+     transition-delay: 1ms;
+    }
+
+    .cart {
+      position: fixed;
+      top:5px;
+      right: 5px;
+      background: rgb(255, 255, 255);
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+     
+    }
+
+    .cart h2 {
+      margin-top: 0;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .cart li {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .total {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎮 Epic Game Store</h1>
+</header>
+
+
+<div class="cart">
+  <h2>C.A.R.T 🛒</h2>
+  <ul id="cartItems"></ul>
+  <div class="total">Total:$<span id="total">0.00</span></div>
+</div>
+
+<div class="container" id="productContainer">
+</div>
+
+<script>
+  const products = [
+    {
+      id: 1,
+      name: "R.E.P.O",
+      price: 49.99,
+      image: "repo.jpg"
+    },
+    {
+      id: 2,
+      name: "GTA V",
+      price: 89.99,
+      image: "gta v.webp"
+    },
+    {
+      id: 3,
+      name: "RDR 2",
+      price: 29.99,
+      image: "rdr2.webp"
+    },
+    {
+      id: 4,
+      name: "Home Sweet Home II",
+      price: 19.99,
+      image: "hsh.webp"
+    },
+    {
+      id: 5,
+      name: "ZOOCHOSIS",
+      price: 25.00,
+      image: "zoochosis.webp"
+    },
+    {
+      id: 6,
+      name: "DEVOUR",
+      price: 15.50,
+      image: "devour.webp"
+    },
+     {
+      id: 7,
+      name: "ZORT",
+      price: 25.00,
+      image: "zort.jpg"
+    },
+     {
+      id: 8,
+      name: "AMONG US",
+      price: 25.00,
+      image: "among us.jpg"
+    },
+     {
+      id: 9,
+      name: "GRAVEYARD SHIFT",
+      price: 25.00,
+      image: "graveyard shift.jpg"
+    },
+     {
+      id: 10,
+      name: "THE INN SANITY",
+      price: 25.00,
+      image: "The inn sanity.jpg"
+    },
+     {
+      id: 11,
+      name: "dead by daylight",
+      price: 25.00,
+      image: "DEAD BY DAYLIGHT.jpg"
+    },
+     {
+      id: 12,
+      name: "OH DEER",
+      price: 25.00,
+      image: "ohdeer.jpg"
+    },
+     {
+      id: 13,
+      name: "Squirrel With A Gun",
+      price: 25.00,
+      image: "squirrel with a gun.jpg"
+    },
+     {
+      id: 14,
+      name: "The Bridge Curse 2",
+      price: 25.00,
+      image: "the bridgecurse2.jpg"
+    },
+  ];
+
+  const cart = [];
+
+  const productContainer = document.getElementById("productContainer");
+  const cartItems = document.getElementById("cartItems");
+  const totalDisplay = document.getElementById("total");
+
+  function displayProducts() {
+    products.forEach(product => {
+      const div = document.createElement("div");
+      div.classList.add("product");
+
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>Price: $${product.price.toFixed(2)}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+
+      productContainer.appendChild(div);
+    });
+  }
+
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    updateCart();
+  }
+
+  function updateCart() {
+    cartItems.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+      cartItems.appendChild(li);
+      total += item.price;
+    });
+
+    totalDisplay.textContent = total.toFixed(2);
+  }
+
+  displayProducts();
+</script>
+
+</body>
+</html>
