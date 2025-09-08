@@ -3,16 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <title>Epic Game Store</title>
-  <link rel="stylesheet" href="OG.css">
+  
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-image: url(background.jpeg);
-      background-size: cover;
-      background-position: center;
-      background-repeat: repeat;
-    }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  /* Remove static background image */
+  background: linear-gradient(120deg, #0f2027, #2c5364, #0084ffc4, #ff4d4d);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  position: relative;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #b8b8b8 #222;
+}
+
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Floating circles animation */
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.25;
+  pointer-events: none;
+  animation: floatCircle 12s linear infinite;
+}
+
+.bg-circle1 { width: 180px; height: 180px; top: 10%; left: 5%; background: #0084ffc4; animation-delay: 0s;}
+.bg-circle2 { width: 120px; height: 120px; top: 70%; left: 80%; background: #ff4d4d; animation-delay: 3s;}
+.bg-circle3 { width: 90px; height: 90px; top: 40%; left: 60%; background: #fff; animation-delay: 6s;}
+.bg-circle4 { width: 140px; height: 140px; top: 80%; left: 20%; background: #2c5364; animation-delay: 9s;}
+
+@keyframes floatCircle {
+  0% { transform: translateY(0) scale(1);}
+  50% { transform: translateY(-40px) scale(1.1);}
+  100% { transform: translateY(0) scale(1);}
+}
+
+    /* Add glowing border to product cards */
+.product {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 15px;
+  padding: 15px;
+  width: 220px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18), 0 0 24px #0084ffc4 inset;
+  transition: transform 0.3s, box-shadow 0.3s;
+  transform: scale(1);
+  position: relative;
+  overflow: hidden;
+}
+.product:hover {
+  animation: float 0.6s ease-in-out;
+  transform: scale(1.1);
+  box-shadow: 0 8px 32px #0084ffc4, 0 0 32px #ffd700 inset;
+  border: 2px solid #ffd700;
+}
+
+/* Add animated sparkles on hover */
+.product::after {
+  content: '';
+  position: absolute;
+  top: 10px; right: 10px; width: 24px; height: 24px;
+  background: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2728.png') no-repeat center/contain;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.product:hover::after {
+  opacity: 1;
+  animation: sparkle 1.2s infinite;
+}
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg);}
+  50% { transform: scale(1.3) rotate(20deg);}
+}
+
+/* Glowing animated header */
+header {
+  background-color: #000000b7;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 0 32px #0084ffc4;
+  border-bottom: 2px solid #ffd700;
+  position: relative;
+}
+header h1 {
+  font-size: 2.2em;
+  letter-spacing: 2px;
+  text-shadow: 0 0 16px #ffd700, 0 0 8px #0084ffc4;
+  animation: miracleGlow 2.5s infinite alternate;
+}
+@keyframes miracleGlow {
+  0% { text-shadow: 0 0 16px #ffd700, 0 0 8px #0084ffc4;}
+  100% { text-shadow: 0 0 32px #ffd700, 0 0 24px #0084ffc4;}
+}
+
+/* Magical floating circles (already present, just enhance) */
+.bg-circle {
+  opacity: 0.35;
+  filter: blur(2px) brightness(1.2);
+  animation: floatCircle 12s linear infinite, miraclePulse 2.5s infinite alternate;
+}
+@keyframes miraclePulse {
+  0% { filter: blur(2px) brightness(1.2);}
+  100% { filter: blur(6px) brightness(1.5);}
+}
+
+/* Miracle glowing nav links */
+nav ul li a {
+  color: #ffd700 !important;
+  text-shadow: 0 0 8px #0084ffc4;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+nav ul li a:hover {
+  color: #fff !important;
+  text-shadow: 0 0 16px #ffd700, 0 0 8px #0084ffc4;
+}
+
+/* Glowing cart button */
+#cartMenuBtn {
+  box-shadow: 0 0 12px #ffd700;
+  border: 2px solid #ffd700;
+  background: linear-gradient(90deg, #0084ffc4 60%, #ffd700 100%);
+  color: #222 !important;
+  font-weight: bold;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+#cartMenuBtn:hover {
+  box-shadow: 0 0 24px #ffd700;
+  background: linear-gradient(90deg, #ffd700 60%, #0084ffc4 100%);
+}
+
+/* Miracle footer */
+footer {
+  background: linear-gradient(90deg, #2c5364 60%, #ffd700 100%);
+  color: #222 !important;
+  font-weight: bold;
+  box-shadow: 0 0 24px #ffd700;
+  border-top: 2px solid #ffd700;
+}
 
     header {
       background-color: #000000b7;
@@ -42,17 +180,44 @@
 
     }
     .product:hover {
-      transform: scale(1.1); 
+      animation: float 0.6s ease-in-out;
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
+    .product.bounce {
+  animation: bounce 0.5s;
+}
   
-    
- 
+    .joystick-char {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 8px;
+  transition: transform 0.3s;
+  display: block;
+}
+
+.product:hover .joystick-char {
+  animation: joystick-move 0.7s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+
+@keyframes joystick-move {
+  0%   { transform: rotate(0deg) scale(1); }
+  20%  { transform: rotate(-20deg) scale(1.2); }
+  40%  { transform: rotate(20deg) scale(1.2); }
+  60%  { transform: rotate(-10deg) scale(1.1); }
+  80%  { transform: rotate(10deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
     .product img {
       width: 100%;
       height: 180px;
       object-fit: cover;
       border-radius: 4px;
+      display: block;
+      background: #222;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
 
     .product h3 {
@@ -118,110 +283,186 @@
       margin-top: 10px;
       font-weight: bold;
     }
+
+    /* Custom vertical scrollbar for the whole page */
+body {
+  /* ...existing code... */
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #b8b8b8 #222;
+}
+
+/* Chrome, Edge, Safari */
+body::-webkit-scrollbar {
+  width: 16px;
+  background: #222;
+  border-radius: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: linear-gradient(120deg, #222 60%, #555 100%);
+  border-radius: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #b8b8b8 60%, #e0e0e0 100%);
+  border-radius: 8px;
+  border: 3px solid #222;
+  box-shadow: 0 0 8px #ffd700, 0 0 0 2px #222 inset;
+}
+
   </style>
 </head>
 <body>
-
+  <div class="bg-circle bg-circle1"></div>
+  <div class="bg-circle bg-circle2"></div>
+  <div class="bg-circle bg-circle3"></div>
+  <div class="bg-circle bg-circle4"></div>
 <header>
   <h1>🎮 Epic Game Store</h1>
+  <nav style="position:absolute; top:18px; right:120px;">
+    <ul style="display:flex; gap:18px; list-style:none; margin:0; padding:0;">
+      <li><a href="#" style="color:#fff; text-decoration:none; font-weight:bold;">Home</a></li>
+      <li><a href="#" style="color:#fff; text-decoration:none; font-weight:bold;">Games</a></li>
+      <li><a href="#" style="color:#fff; text-decoration:none; font-weight:bold;">About</a></li>
+      <li><a href="#" style="color:#fff; text-decoration:none; font-weight:bold;">Contact</a></li>
+    </ul>
+  </nav>
+  <button id="cartMenuBtn" style="float:right; margin-top:10px; padding:8px 16px; border-radius:6px; background:#0084ffc4; color:#fff; border:none; cursor:pointer;">🛒 Cart</button>
 </header>
 
 
-<div class="cart">
+<div class="cart" id="cartMenu" style="display:none;">
   <h2>C.A.R.T 🛒</h2>
   <ul id="cartItems"></ul>
   <div class="total">Total:$<span id="total">0.00</span></div>
+  <button id="payBtn" style="margin-top:12px; width:100%; background:#ffd700; color:#222; font-weight:bold; border:none; border-radius:6px; padding:10px; cursor:pointer;">Proceed to Payment</button>
 </div>
 
 <div class="container" id="productContainer">
 </div>
 
+<!-- Epic Games Account Modal -->
+<div id="epicModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#222; color:#fff; padding:32px 24px; border-radius:12px; box-shadow:0 8px 32px #000; min-width:300px; max-width:90vw; text-align:center; position:relative;">
+    <h2 style="color:#ffd700; margin-top:0;">Epic Games Account</h2>
+    <form id="epicForm">
+      <label for="epicUsername" style="display:block; margin-bottom:6px;">Username:</label>
+      <input type="text" id="epicUsername" required style="width:100%; padding:8px; border-radius:6px; border:none; margin-bottom:12px;">
+      <label for="epicPassword" style="display:block; margin-bottom:6px;">Password:</label>
+      <input type="password" id="epicPassword" required style="width:100%; padding:8px; border-radius:6px; border:none; margin-bottom:12px;">
+      <label for="epicEmail" style="display:block; margin-bottom:6px;">Email:</label>
+      <input type="email" id="epicEmail" required style="width:100%; padding:8px; border-radius:6px; border:none; margin-bottom:18px;">
+      <button type="submit" style="background:#ffd700; color:#222; font-weight:bold; border:none; border-radius:6px; padding:10px 0; width:100%; cursor:pointer;">Continue</button>
+    </form>
+  </div>
+</div>
+
+<!-- Success message on left top corner -->
+<div id="buyMoreMsg" style="display:none; position:fixed; top:18px; left:18px; background:#222; color:#ffd700; padding:14px 22px; border-radius:8px; box-shadow:0 4px 16px #000; font-size:1.15em; z-index:9999;">
+  You want to buy more games, MR Gamer
+</div>
+
 <script>
   const products = [
-    {
-      id: 1,
-      name: "R.E.P.O",
-      price: 49.99,
-      image: "repo.jpg"
-    },
-    {
-      id: 2,
-      name: "GTA V",
-      price: 89.99,
-      image: "gta v.webp"
-    },
-    {
-      id: 3,
-      name: "RDR 2",
-      price: 29.99,
-      image: "rdr2.webp"
-    },
-    {
-      id: 4,
-      name: "Home Sweet Home II",
-      price: 19.99,
-      image: "hsh.webp"
-    },
-    {
-      id: 5,
-      name: "ZOOCHOSIS",
-      price: 25.00,
-      image: "zoochosis.webp"
-    },
-    {
-      id: 6,
-      name: "DEVOUR",
-      price: 15.50,
-      image: "devour.webp"
-    },
-     {
-      id: 7,
-      name: "ZORT",
-      price: 25.00,
-      image: "zort.jpg"
-    },
-     {
-      id: 8,
-      name: "AMONG US",
-      price: 25.00,
-      image: "among us.jpg"
-    },
-     {
-      id: 9,
-      name: "GRAVEYARD SHIFT",
-      price: 25.00,
-      image: "graveyard shift.jpg"
-    },
-     {
-      id: 10,
-      name: "THE INN SANITY",
-      price: 25.00,
-      image: "The inn sanity.jpg"
-    },
-     {
-      id: 11,
-      name: "dead by daylight",
-      price: 25.00,
-      image: "DEAD BY DAYLIGHT.jpg"
-    },
-     {
-      id: 12,
-      name: "OH DEER",
-      price: 25.00,
-      image: "ohdeer.jpg"
-    },
-     {
-      id: 13,
-      name: "Squirrel With A Gun",
-      price: 25.00,
-      image: "squirrel with a gun.jpg"
-    },
-     {
-      id: 14,
-      name: "The Bridge Curse 2",
-      price: 25.00,
-      image: "the bridgecurse2.jpg"
-    },
+  {
+    id: 1,
+    name: "R.E.P.O",
+    price: 49.99,
+    image: "repo.jpg",
+    rating: 4
+  },
+  {
+    id: 2,
+    name: "GTA V",
+    price: 89.99,
+    image: "gta v.webp",
+    rating: 5
+  },
+  {
+    id: 3,
+    name: "RDR 2",
+    price: 29.99,
+    image: "rdr2.webp",
+    rating: 5
+  },
+  {
+    id: 4,
+    name: "Home Sweet Home II",
+    price: 19.99,
+    image: "hsh.webp",
+    rating: 3
+  },
+  {
+    id: 5,
+    name: "ZOOCHOSIS",
+    price: 25.00,
+    image: "zoochosis.webp",
+    rating: 3
+  },
+  {
+    id: 6,
+    name: "DEVOUR",
+    price: 15.50,
+    image: "devour.webp",
+    rating: 4
+  },
+  {
+    id: 7,
+    name: "ZORT",
+    price: 25.00,
+    image: "zort.jpg",
+    rating: 2
+  },
+  {
+    id: 8,
+    name: "AMONG US",
+    price: 25.00,
+    image: "among us.jpg",
+    rating: 4
+  },
+  {
+    id: 9,
+    name: "GRAVEYARD SHIFT",
+    price: 25.00,
+    image: "graveyard shift.jpg",
+    rating: 3
+  },
+  {
+    id: 10,
+    name: "THE INN SANITY",
+    price: 25.00,
+    image: "The inn sanity.jpg",
+    rating: 2
+  },
+  {
+    id: 11,
+    name: "dead by daylight",
+    price: 25.00,
+    image: "DEAD BY DAYLIGHT.jpg",
+    rating: 5
+  },
+  {
+    id: 12,
+    name: "OH DEER",
+    price: 25.00,
+    image: "ohdeer.jpg",
+    rating: 3
+  },
+  {
+    id: 13,
+    name: "Squirrel With A Gun",
+    price: 25.00,
+    image: "squirrel with a gun.jpg",
+    rating: 4
+  },
+  {
+    id: 14,
+    name: "The Bridge Curse 2",
+    price: 25.00,
+    image: "the bridgecurse2.jpg",
+    rating: 3
+  },
   ];
 
   const cart = [];
@@ -229,16 +470,39 @@
   const productContainer = document.getElementById("productContainer");
   const cartItems = document.getElementById("cartItems");
   const totalDisplay = document.getElementById("total");
+  const cartMenuBtn = document.getElementById("cartMenuBtn");
+  const cartMenu = document.getElementById("cartMenu");
+  
+  cartMenuBtn.addEventListener("click", (e) => {
+  cartMenu.style.display = cartMenu.style.display === "none" ? "block" : "none";
+  e.stopPropagation(); // Prevent click from bubbling up
+});
+
+document.addEventListener("click", (e) => {
+  if (
+    cartMenu.style.display === "block" &&
+    !cartMenu.contains(e.target) &&
+    e.target !== cartMenuBtn
+  ) {
+    cartMenu.style.display = "none";
+  }
+});
 
   function displayProducts() {
+    // Remove woman character before products
     products.forEach(product => {
       const div = document.createElement("div");
       div.classList.add("product");
 
+      // Generate star rating HTML
+      const stars = "★".repeat(product.rating) + "☆".repeat(5 - product.rating);
+
       div.innerHTML = `
+        <div class="joystick-char">🎮</div>
         <img src="${product.image}" alt="${product.name}">
         <h3>${product.name}</h3>
         <p>Price: $${product.price.toFixed(2)}</p>
+        <p>Rating: <span style="color:gold; font-size:1.2em;">${stars}</span></p>
         <button onclick="addToCart(${product.id})">Add to Cart</button>
       `;
 
@@ -246,28 +510,98 @@
     });
   }
 
+  let epicAccountVerified = false;
+
+  // Show Epic Games modal if not verified
+  function showEpicModal() {
+    document.getElementById('epicModal').style.display = 'flex';
+  }
+
+  // Hide Epic Games modal
+  function hideEpicModal() {
+    document.getElementById('epicModal').style.display = 'none';
+  }
+
+  // Handle Epic Games form submission
+  document.getElementById('epicForm').onsubmit = function(e) {
+    e.preventDefault();
+    epicAccountVerified = true;
+    hideEpicModal();
+  };
+
   function addToCart(id) {
+    if (!epicAccountVerified) {
+      showEpicModal();
+      return;
+    }
     const product = products.find(p => p.id === id);
     cart.push(product);
     updateCart();
+
+    // Animation for product card
+    const productCards = document.querySelectorAll('.product');
+    productCards.forEach(card => {
+      if (card.querySelector('button').getAttribute('onclick') === `addToCart(${id})`) {
+        card.classList.add('bounce');
+        setTimeout(() => card.classList.remove('bounce'), 500);
+      }
+    });
   }
 
   function updateCart() {
     cartItems.innerHTML = "";
     let total = 0;
 
-    cart.forEach(item => {
+    cart.forEach((item, index) => {
       const li = document.createElement("li");
       li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+
+      // Add remove button
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "❌";
+      removeBtn.style.marginLeft = "10px";
+      removeBtn.style.background = "#ff4d4d";
+      removeBtn.style.color = "#fff";
+      removeBtn.style.border = "none";
+      removeBtn.style.borderRadius = "4px";
+      removeBtn.style.cursor = "pointer";
+      removeBtn.onclick = () => {
+        cart.splice(index, 1);
+        updateCart();
+      };
+
+      li.appendChild(removeBtn);
       cartItems.appendChild(li);
       total += item.price;
     });
 
     totalDisplay.textContent = total.toFixed(2);
+
   }
 
+  document.getElementById("payBtn").onclick = function() {
+  window.location.href = "payment.html";
+};
+
   displayProducts();
+
+  // Show message if redirected after payment
+  if (localStorage.getItem('showBuyMoreMsg') === 'true') {
+    document.getElementById('buyMoreMsg').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('buyMoreMsg').style.display = 'none';
+      localStorage.removeItem('showBuyMoreMsg');
+    }, 4000);
+  }
 </script>
+
+<footer style="width:100%; background:rgba(0,0,0,0.85); color:#fff; text-align:center; padding:30px 10px 18px 10px; position:relative; margin-top:40px; font-size:1.1em;">
+  <div>
+    <strong>Epic Game Store</strong> &copy; 2025<br>
+    Powered by Gowtham TB<br>
+    Contact: <a href="mailto:epicgamestore@example.com" style="color:#ffd700;">epicgamestore@example.com</a> | Phone: +91-9876543210
+  </div>
+</footer>
 
 </body>
 </html>

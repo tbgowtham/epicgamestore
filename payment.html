@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment - Epic Game Store</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #0f2027, #2c5364, #0084ffc4, #ff4d4d);
+      background-size: 400% 400%;
+      animation: gradientMove 15s ease infinite;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    /* Magical floating circles */
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.25;
+      pointer-events: none;
+      animation: floatCircle 12s linear infinite, miraclePulse 2.5s infinite alternate;
+    }
+    .bg-circle1 { width: 180px; height: 180px; top: 10%; left: 5%; background: #0084ffc4; animation-delay: 0s;}
+    .bg-circle2 { width: 120px; height: 120px; top: 70%; left: 80%; background: #ff4d4d; animation-delay: 3s;}
+    .bg-circle3 { width: 90px; height: 90px; top: 40%; left: 60%; background: #fff; animation-delay: 6s;}
+    .bg-circle4 { width: 140px; height: 140px; top: 80%; left: 20%; background: #2c5364; animation-delay: 9s;}
+
+    @keyframes floatCircle {
+      0% { transform: translateY(0) scale(1);}
+      50% { transform: translateY(-40px) scale(1.1);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    @keyframes miraclePulse {
+      0% { filter: blur(2px) brightness(1.2);}
+      100% { filter: blur(6px) brightness(1.5);}
+    }
+
+    .payment-container {
+      background: rgba(0,0,0,0.85);
+      padding: 32px 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px #0084ffc4, 0 0 32px #ffd700 inset;
+      width: 370px;
+      max-width: 95vw;
+      position: relative;
+      z-index: 2;
+      border: 2px solid #ffd700;
+      animation: miracleGlow 2.5s infinite alternate;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #ffd700;
+      text-align: center;
+      font-size: 2em;
+      text-shadow: 0 0 16px #ffd700, 0 0 8px #0084ffc4;
+      animation: miracleGlow 2.5s infinite alternate;
+    }
+
+    @keyframes miracleGlow {
+      0% { box-shadow: 0 0 32px #ffd700, 0 0 8px #0084ffc4;}
+      100% { box-shadow: 0 0 48px #ffd700, 0 0 24px #0084ffc4;}
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 0 0 8px #0084ffc4;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+      font-size: 1em;
+      background: #222;
+      color: #ffd700;
+      box-shadow: 0 0 8px #0084ffc4 inset;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    input:focus, select:focus {
+      box-shadow: 0 0 16px #ffd700;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #0084ffc4 60%, #ffd700 100%);
+      color: #222;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      font-size: 1.15em;
+      margin-top: 10px;
+      box-shadow: 0 0 12px #ffd700;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .pay-btn:hover {
+      box-shadow: 0 0 24px #ffd700;
+      background: linear-gradient(90deg, #ffd700 60%, #0084ffc4 100%);
+    }
+
+    .account-link {
+      color: #0084ffc4;
+      text-decoration: underline;
+      font-size: 0.95em;
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* Floating Payment Success Modal */
+    #paymentSuccess {
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100vw; height:100vh;
+      background:rgba(0,0,0,0.5);
+      z-index:9999;
+      justify-content:center;
+      align-items:center;
+    }
+    #paymentSuccess > div {
+      background:#222;
+      color:#ffd700;
+      padding:32px 24px;
+      border-radius:16px;
+      box-shadow:0 8px 32px #0084ffc4, 0 0 32px #ffd700 inset;
+      min-width:260px;
+      max-width:90vw;
+      text-align:center;
+      font-size:1.3em;
+      border: 2px solid #ffd700;
+      animation: miracleGlow 2.5s infinite alternate;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2>Payment Details</h2>
+    <form id="paymentForm">
+      <label for="method">Choose Payment Method:</label>
+      <select id="method" name="method" required>
+        <option value="">--Select--</option>
+        <option value="card">Debit/Credit Card</option>
+        <option value="upi">UPI</option>
+      </select>
+
+      <div id="cardFields" style="display:none;">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" maxlength="16" placeholder="XXXX XXXX XXXX XXXX">
+        <label for="cardName">Cardholder Name:</label>
+        <input type="text" id="cardName" placeholder="Name on Card">
+        <label for="cardExpiry">Expiry Date:</label>
+        <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/YY">
+        <label for="cardCVV">CVV:</label>
+        <input type="password" id="cardCVV" maxlength="4" placeholder="CVV">
+      </div>
+
+      <div id="upiFields" style="display:none;">
+        <label for="upiId">UPI ID:</label>
+        <input type="text" id="upiId" placeholder="yourupi@bank">
+      </div>
+
+      <button type="submit" class="pay-btn">Pay Now</button>
+    </form>
+  </div>
+
+  <!-- Floating Payment Success Modal -->
+  <div id="paymentSuccess" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#222; color:#ffd700; padding:32px 24px; border-radius:16px; box-shadow:0 8px 32px #0084ffc4, 0 0 32px #ffd700 inset; min-width:260px; max-width:90vw; text-align:center; font-size:1.3em;">
+      <span style="font-size:2em;">✅</span><br>
+      Payment Successful!
+    </div>
+  </div>
+
+  <script>
+    // Show/hide payment fields based on selection
+    document.getElementById('method').addEventListener('change', function() {
+      document.getElementById('cardFields').style.display = this.value === 'card' ? 'block' : 'none';
+      document.getElementById('upiFields').style.display = this.value === 'upi' ? 'block' : 'none';
+    });
+
+    // Payment process simulation and success modal
+    document.getElementById('paymentForm').onsubmit = function(e) {
+      e.preventDefault();
+      // Show processing message
+      const btn = document.querySelector('.pay-btn');
+      btn.textContent = 'Processing...';
+      btn.disabled = true;
+
+      setTimeout(function() {
+        document.getElementById('paymentSuccess').style.display = 'flex';
+        btn.textContent = 'Pay Now';
+        btn.disabled = false;
+        // Hide modal and redirect to index.html after a few seconds
+        setTimeout(function() {
+          document.getElementById('paymentSuccess').style.display = 'none';
+          window.location.href = "index.html";
+        }, 2500);
+      }, 2000); // Simulate 2 seconds processing
+    };
+
+    // Set showBuyMoreMsg in localStorage
+    localStorage.setItem('showBuyMoreMsg', 'true');
+
+    // When user clicks "Proceed to Payment" in index.html
+    // localStorage.setItem('cartTotal', totalAmount); // totalAmount should be your cart's total value
+    // window.location.href = "payment.html";
+  </script>
+</body>
+</html>
